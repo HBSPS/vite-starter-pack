@@ -1,11 +1,11 @@
 {
   "name": "vite-starter-pack",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "dist/bin/vite-starter-pack.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run build && node dist/vite-starter-pack.js",
+    "dev": "npm run build && node dist/bin/vite-starter-pack.js",
     "build": "rollup -c rollup.config.js",
     "prebuild": "rm -rf dist"
   },

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { input, confirm, select } from '@inquirer/prompts';
+import createProject from '../plugin/createProject';
 
 try {
   const devDependencies: string[] = [];
@@ -15,7 +16,10 @@ try {
     message: "Do you want to install airbnb's eslint rule?",
   });
 
-  if (installAirbnb) peerDependencies.push('eslint-config-airbnb');
+  if (installAirbnb) {
+    peerDependencies.push('eslint-config-airbnb');
+    devDependencies.push('eslint-config-airbnb-typescript');
+  }
 
   const installPrettier = await confirm({
     message: 'Do you want to install prettier?',
@@ -107,8 +111,6 @@ try {
       break;
   }
 
-  console.log(projectName);
-  console.log(dependencies);
-  console.log(devDependencies);
-  console.log(peerDependencies);
+  console.log();
+  createProject(projectName);
 } catch {}

@@ -7,6 +7,6 @@ export default {
     dir: 'dist',
     preserveModules: true,
   },
-  external: ['@inquirer/prompts'],
+  external: ['@inquirer/prompts', 'child_process'],
   plugins: [typescript({ tsconfig: 'tsconfig.json' })],
 };

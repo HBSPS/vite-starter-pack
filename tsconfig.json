@@ -1,5 +1,5 @@
 {
-  "include": ["bin/**/*"],
+  "include": ["bin/**/*", "plugin/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "outDir": "dist",
