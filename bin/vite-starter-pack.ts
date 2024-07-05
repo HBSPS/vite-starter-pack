@@ -7,6 +7,7 @@ import installDevDependencies from '../plugin/installDevDependencies';
 import installPeerDependencies from '../plugin/installPeerDependencies';
 import getEslintConfig from '../plugin/getEslintConfig';
 import configAirbnb from '../plugin/configAirbnb';
+import configPrettier from '../plugin/configPrettier';
 
 try {
   const devDependencies: string[] = [];
@@ -30,7 +31,7 @@ try {
     message: 'Do you want to install prettier?',
   });
 
-  if (installPrettier) devDependencies.push('prettier');
+  if (installPrettier) devDependencies.push('prettier', 'eslint-config-prettier');
 
   const installLintStaged = await confirm({
     message: 'Do you want to install lint-staged?',
@@ -117,13 +118,14 @@ try {
   }
 
   console.log();
-  // createProject(projectName);
-  // installDependencies(projectName, dependencies);
-  // installDevDependencies(projectName, devDependencies);
-  // installPeerDependencies(projectName, peerDependencies);
+  createProject(projectName);
+  installDependencies(projectName, dependencies);
+  installDevDependencies(projectName, devDependencies);
+  installPeerDependencies(projectName, peerDependencies);
 
   let eslintConfig = getEslintConfig(projectName);
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
+  if (installPrettier) eslintConfig = configPrettier(eslintConfig);
   console.log(eslintConfig);
 } catch (error) {
   console.error(error);
