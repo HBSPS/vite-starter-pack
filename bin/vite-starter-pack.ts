@@ -2,6 +2,9 @@
 
 import { input, confirm, select } from '@inquirer/prompts';
 import createProject from '../plugin/createProject';
+import installDependencies from '../plugin/installDependencies';
+import installDevDependencies from '../plugin/installDevDependencies';
+import installPeerDependencies from '../plugin/installPeerDependencies';
 
 try {
   const devDependencies: string[] = [];
@@ -113,4 +116,7 @@ try {
 
   console.log();
   createProject(projectName);
+  installDependencies(projectName, dependencies);
+  installDevDependencies(projectName, devDependencies);
+  installPeerDependencies(projectName, peerDependencies);
 } catch {}
