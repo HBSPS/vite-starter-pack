@@ -1,22 +1,21 @@
 #!/usr/bin/env node
 
-import { confirm, select } from '@inquirer/prompts';
+import { input, confirm, select } from '@inquirer/prompts';
 
 try {
-  const devDependencies = ['npm i -D'];
-  const dependencies = ['npm i'];
+  const devDependencies: string[] = [];
+  const dependencies: string[] = [];
+  const peerDependencies: string[] = [];
 
-  const usingCreateVite = await confirm({
-    message: 'Did you use create vite for your project? (or does your project already have eslint?)',
+  const projectName = await input({
+    message: 'Enter the name of your project',
   });
 
-  if (!usingCreateVite) {
-    const installEslint = await confirm({
-      message: 'Do you want to install eslint?',
-    });
+  const installAirbnb = await confirm({
+    message: "Do you want to install airbnb's eslint rule?",
+  });
 
-    if (installEslint) devDependencies.push('eslint@8.57.0');
-  }
+  if (installAirbnb) peerDependencies.push('eslint-config-airbnb');
 
   const installPrettier = await confirm({
     message: 'Do you want to install prettier?',
@@ -108,6 +107,8 @@ try {
       break;
   }
 
+  console.log(projectName);
   console.log(dependencies);
   console.log(devDependencies);
+  console.log(peerDependencies);
 } catch {}
