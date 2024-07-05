@@ -3,6 +3,9 @@
 import { confirm, select } from '@inquirer/prompts';
 
 try {
+  const devDependencies = ['npm i -D'];
+  const dependencies = ['npm i'];
+
   const usingCreateVite = await confirm({
     message: 'Did you use create vite for your project? (or does your project already have eslint?)',
   });
@@ -12,26 +15,26 @@ try {
       message: 'Do you want to install eslint?',
     });
 
-    if (installEslint) console.log('install eslint');
+    if (installEslint) devDependencies.push('eslint@8.57.0');
   }
 
   const installPrettier = await confirm({
     message: 'Do you want to install prettier?',
   });
 
-  if (installPrettier) console.log('install prettier');
+  if (installPrettier) devDependencies.push('prettier');
 
   const installLintStaged = await confirm({
     message: 'Do you want to install lint-staged?',
   });
 
-  if (installLintStaged) console.log('install lint-staged');
+  if (installLintStaged) devDependencies.push('lint-staged');
 
   const installHusky = await confirm({
     message: 'Do you want to install husky?',
   });
 
-  if (installHusky) console.log('install husky');
+  if (installHusky) devDependencies.push('husky');
 
   const installStyling = await select({
     message: 'Do you want to install styling library?',
@@ -53,15 +56,14 @@ try {
 
   switch (installStyling) {
     case 'no':
-      console.log('no');
       break;
 
     case 'tailwind':
-      console.log('install tailwind');
+      devDependencies.push('tailwind', 'postcss', 'autoprefixer');
       break;
 
     case 'emotion':
-      console.log('install emotion');
+      dependencies.push('@emotion/styled', '@emotion/react');
       break;
   }
 
@@ -85,15 +87,27 @@ try {
 
   switch (installTesting) {
     case 'no':
-      console.log('no');
       break;
 
     case 'vitest':
-      console.log('install vitest');
+      devDependencies.push('vitest');
       break;
 
     case 'jest':
-      console.log('install jest');
+      devDependencies.push(
+        'jest',
+        '@types/jest',
+        'ts-node',
+        'ts-jest',
+        '@testing-library/react',
+        'identity-obj-proxy',
+        'jest-environment-jsdom',
+        '@testing-library/jest-dom',
+        'jest-svg-transformer'
+      );
       break;
   }
+
+  console.log(dependencies);
+  console.log(devDependencies);
 } catch {}
