@@ -6,6 +6,7 @@ import installDependencies from '../plugin/installDependencies';
 import installDevDependencies from '../plugin/installDevDependencies';
 import installPeerDependencies from '../plugin/installPeerDependencies';
 import getEslintConfig from '../plugin/getEslintConfig';
+import configAirbnb from '../plugin/configAirbnb';
 
 try {
   const devDependencies: string[] = [];
@@ -116,12 +117,14 @@ try {
   }
 
   console.log();
-  createProject(projectName);
-  installDependencies(projectName, dependencies);
-  installDevDependencies(projectName, devDependencies);
-  installPeerDependencies(projectName, peerDependencies);
+  // createProject(projectName);
+  // installDependencies(projectName, dependencies);
+  // installDevDependencies(projectName, devDependencies);
+  // installPeerDependencies(projectName, peerDependencies);
 
-  const eslintConfig = getEslintConfig(projectName);
+  let eslintConfig = getEslintConfig(projectName);
+  if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
+  console.log(eslintConfig);
 } catch (error) {
   console.error(error);
   process.exit(1);

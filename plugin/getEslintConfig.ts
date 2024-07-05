@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
+import JSON5 from 'json5';
 
-interface DefaultEslintConfig {
+export interface DefaultEslintConfig {
   root: boolean;
   env: { browser: boolean; es2020: boolean };
   extends: string[];
@@ -13,7 +14,7 @@ export default function getEslintConfig(projectName: string): DefaultEslintConfi
   try {
     const configObj = readFileSync(`${projectName}/.eslintrc.cjs`, 'utf-8').split('=')[1];
 
-    return JSON.parse(JSON.stringify(configObj));
+    return JSON5.parse(configObj);
   } catch (error) {
     throw error;
   }
