@@ -5,6 +5,7 @@ import createProject from '../plugin/createProject';
 import installDependencies from '../plugin/installDependencies';
 import installDevDependencies from '../plugin/installDevDependencies';
 import installPeerDependencies from '../plugin/installPeerDependencies';
+import getEslintConfig from '../plugin/getEslintConfig';
 
 try {
   const devDependencies: string[] = [];
@@ -119,4 +120,9 @@ try {
   installDependencies(projectName, dependencies);
   installDevDependencies(projectName, devDependencies);
   installPeerDependencies(projectName, peerDependencies);
-} catch {}
+
+  const eslintConfig = getEslintConfig(projectName);
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}
