@@ -9,6 +9,7 @@ import getEslintConfig from '../plugin/getEslintConfig';
 import configAirbnb from '../plugin/configAirbnb';
 import configPrettier from '../plugin/configPrettier';
 import configLintStagedAndHusky from '../plugin/configLintStagedAndHusky';
+import configTailwind from '../plugin/configTailwind';
 
 try {
   const devDependencies: string[] = [];
@@ -122,6 +123,7 @@ try {
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
   if (installPrettier) eslintConfig = configPrettier(eslintConfig);
   if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
+  if (installStyling === 'tailwind') configTailwind(projectName);
   console.log(eslintConfig);
 } catch (error) {
   console.error(error);
