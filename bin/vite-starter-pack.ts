@@ -14,6 +14,8 @@ import saveEslintConfig from '../plugin/saveEslintConfig';
 import configEmotion from '../plugin/configEmotion';
 import getTsconfig from '../plugin/getTsconfig';
 import saveTsConfig from '../plugin/saveTsconfig';
+import configVitest from '../plugin/configVitest';
+import saveViteConfig from '../plugin/saveViteConfig';
 
 try {
   const devDependencies: string[] = [];
@@ -76,46 +78,11 @@ try {
       break;
   }
 
-  const installTesting = await select({
-    message: 'Do you want to install testing library?',
-    choices: [
-      {
-        name: '(no)',
-        value: 'no',
-      },
-      {
-        name: 'vitest',
-        value: 'vitest',
-      },
-      {
-        name: 'jest',
-        value: 'jest',
-      },
-    ],
+  const installTesting = await confirm({
+    message: 'Do you want to install vitest and react-testing-library?',
   });
 
-  switch (installTesting) {
-    case 'no':
-      break;
-
-    case 'vitest':
-      devDependencies.push('vitest');
-      break;
-
-    case 'jest':
-      devDependencies.push(
-        'jest',
-        '@types/jest',
-        'ts-node',
-        'ts-jest',
-        '@testing-library/react',
-        'identity-obj-proxy',
-        'jest-environment-jsdom',
-        '@testing-library/jest-dom',
-        'jest-svg-transformer'
-      );
-      break;
-  }
+  if (installTesting) devDependencies.push('vitest', '@testing-library/react', '@testing-library/jest-dom', 'jsdom');
 
   console.log();
   createProject(projectName);
@@ -124,17 +91,40 @@ try {
   installPeerDependencies(projectName, peerDependencies);
 
   let eslintConfig = getEslintConfig(projectName);
+
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
+
   if (installPrettier) eslintConfig = configPrettier(eslintConfig);
+
   if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
+
+  let tsconfig = getTsconfig(projectName);
 
   if (installStyling === 'tailwind') configTailwind(projectName);
 
-  let tsconfig = getTsconfig(projectName);
-  if (installStyling === 'emotion') tsconfig = configEmotion(projectName, tsconfig);
+  if (installStyling === 'emotion') tsconfig = configEmotion(tsconfig);
+
+  if (installTesting) tsconfig = configVitest(projectName, tsconfig);
+
+  const vitestConfig = `test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
+  },`;
+
+  const viteConfigContent = `import { defineConfig } from ${installTesting ? "'vitest/config'" : "'vite'"}
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react(${installStyling === 'emotion' ? "{jsxImportSource: '@emotion/react'}" : ''})],
+  ${installTesting && vitestConfig}
+})
+`;
 
   saveEslintConfig(projectName, eslintConfig);
   saveTsConfig(projectName, tsconfig);
+  saveViteConfig(projectName, viteConfigContent);
 } catch (error) {
   console.error(error);
   process.exit(1);
