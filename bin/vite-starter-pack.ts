@@ -11,6 +11,9 @@ import configPrettier from '../plugin/configPrettier';
 import configLintStagedAndHusky from '../plugin/configLintStagedAndHusky';
 import configTailwind from '../plugin/configTailwind';
 import saveEslintConfig from '../plugin/saveEslintConfig';
+import configEmotion from '../plugin/configEmotion';
+import getTsconfig from '../plugin/getTsconfig';
+import saveTsConfig from '../plugin/saveTsconfig';
 
 try {
   const devDependencies: string[] = [];
@@ -124,9 +127,14 @@ try {
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
   if (installPrettier) eslintConfig = configPrettier(eslintConfig);
   if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
+
   if (installStyling === 'tailwind') configTailwind(projectName);
 
+  let tsconfig = getTsconfig(projectName);
+  if (installStyling === 'emotion') tsconfig = configEmotion(projectName, tsconfig);
+
   saveEslintConfig(projectName, eslintConfig);
+  saveTsConfig(projectName, tsconfig);
 } catch (error) {
   console.error(error);
   process.exit(1);
