@@ -10,6 +10,7 @@ import configAirbnb from '../plugin/configAirbnb';
 import configPrettier from '../plugin/configPrettier';
 import configLintStagedAndHusky from '../plugin/configLintStagedAndHusky';
 import configTailwind from '../plugin/configTailwind';
+import saveEslintConfig from '../plugin/saveEslintConfig';
 
 try {
   const devDependencies: string[] = [];
@@ -33,7 +34,7 @@ try {
     message: 'Do you want to install prettier?',
   });
 
-  if (installPrettier) devDependencies.push('prettier', 'eslint-config-prettier');
+  if (installPrettier) devDependencies.push('prettier', 'eslint-config-prettier', 'eslint-plugin-prettier');
 
   const installLintStagedAndHusky = await confirm({
     message: 'Do you want to install lint-staged and husky?',
@@ -64,7 +65,7 @@ try {
       break;
 
     case 'tailwind':
-      devDependencies.push('tailwind', 'postcss', 'autoprefixer');
+      devDependencies.push('tailwindcss', 'postcss', 'autoprefixer');
       break;
 
     case 'emotion':
@@ -124,7 +125,8 @@ try {
   if (installPrettier) eslintConfig = configPrettier(eslintConfig);
   if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
   if (installStyling === 'tailwind') configTailwind(projectName);
-  console.log(eslintConfig);
+
+  saveEslintConfig(projectName, eslintConfig);
 } catch (error) {
   console.error(error);
   process.exit(1);
