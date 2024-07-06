@@ -1,6 +1,6 @@
 {
   "name": "vite-starter-pack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/bin/vite-starter-pack.js",
   "bin": "dist/bin/vite-starter-pack.js",
   "type": "module",

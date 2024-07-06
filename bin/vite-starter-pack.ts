@@ -94,7 +94,7 @@ try {
 
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
 
-  if (installPrettier) eslintConfig = configPrettier(eslintConfig);
+  if (installPrettier) eslintConfig = configPrettier(projectName, eslintConfig);
 
   if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
 
