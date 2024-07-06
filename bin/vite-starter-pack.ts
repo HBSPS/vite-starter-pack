@@ -8,6 +8,7 @@ import installPeerDependencies from '../plugin/installPeerDependencies';
 import getEslintConfig from '../plugin/getEslintConfig';
 import configAirbnb from '../plugin/configAirbnb';
 import configPrettier from '../plugin/configPrettier';
+import configLintStagedAndHusky from '../plugin/configLintStagedAndHusky';
 
 try {
   const devDependencies: string[] = [];
@@ -33,17 +34,11 @@ try {
 
   if (installPrettier) devDependencies.push('prettier', 'eslint-config-prettier');
 
-  const installLintStaged = await confirm({
-    message: 'Do you want to install lint-staged?',
+  const installLintStagedAndHusky = await confirm({
+    message: 'Do you want to install lint-staged and husky?',
   });
 
-  if (installLintStaged) devDependencies.push('lint-staged');
-
-  const installHusky = await confirm({
-    message: 'Do you want to install husky?',
-  });
-
-  if (installHusky) devDependencies.push('husky');
+  if (installLintStagedAndHusky) devDependencies.push('lint-staged', 'husky');
 
   const installStyling = await select({
     message: 'Do you want to install styling library?',
@@ -126,6 +121,7 @@ try {
   let eslintConfig = getEslintConfig(projectName);
   if (installAirbnb) eslintConfig = configAirbnb(eslintConfig);
   if (installPrettier) eslintConfig = configPrettier(eslintConfig);
+  if (installLintStagedAndHusky) configLintStagedAndHusky(projectName, installPrettier);
   console.log(eslintConfig);
 } catch (error) {
   console.error(error);
